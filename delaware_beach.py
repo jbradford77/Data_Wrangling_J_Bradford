@@ -8,7 +8,7 @@ import cerberus
 
 from my_schema import schema
 
-OSM_PATH = "delaware_beaches.osm"
+OSM_PATH = "delaware_beach.osm"
 
 NODES_PATH = "nodes.csv"
 NODE_TAGS_PATH = "nodes_tags.csv"
@@ -38,7 +38,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     way_nodes = []
     tags = []  # Handle secondary tags the same way for both node and way elements
 
-    # YOUR horrible CODE that doesn't work HERE
+    # My horrible CODE that doesn't work HERE:
 
     if element.tag == 'node':
         for attrib in NODE_FIELDS:
@@ -53,7 +53,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                     node_tag_dict['type'] = child.get('k').split(':', 1)[0]
                     node_tag_dict['key'] = child.get('k').split(':', 1)[1]
                 else:
-                    node_tag_dict['type'] = 'regular'
+                    node_tag_dict['type'] = default_tag_type
                     node_tag_dict['key'] = child.get('k')
                 tags.append(node_tag_dict)
         return {'node': node_attribs, 'node_tags': tags}
@@ -62,14 +62,26 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
         for tag_val in WAY_FIELDS:
             way_attribs[tag_val] = element.get(tag_val)
         i = 0
-        for child in element.iter("tag"):            
-            if (child.tag == 'nd'):
+        for child in element:            
+            if child.tag == 'nd':
                 way_tag_dict = {}             
                 way_tag_dict['id'] = element.get('id')
                 way_tag_dict['node_id'] = child.get('ref')
                 way_tag_dict['position'] = i
                 i += 1
                 way_nodes.append(way_tag_dict)
+        for child in element.iter("tag"):
+            way_tags = {}
+            colon = child.get('k').find(':')
+            if (child.tag == 'tag'):
+                way_tags['id'] = element.get('id')
+                way_tags['value'] = child.get('v')
+                way_tags['type'] = default_tag_type
+                if (colon != -1):
+                    way_tags['key'] = child.get('k').split(':', 1)[1]
+                else:
+                    way_tags['key'] = child.get('k')
+                tags.append(way_tags)
         return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
 
 
@@ -90,7 +102,7 @@ def get_element(osm_file, tags=('node', 'way', 'relation')):
 def validate_element(element, validator, schema=SCHEMA):
     """Raise ValidationError if element does not match schema"""
     if validator.validate(element, schema) is not True:
-        field, errors = next(validator.errors.values())
+        field, errors = next(validator.errors.values()) #field, errors = next(validator.errors)
         message_string = "\nElement of type '{0}' has the following errors:\n{1}"
         error_string = pprint.pformat(errors)
 
@@ -116,11 +128,11 @@ class UnicodeDictWriter(csv.DictWriter, object):
 def process_map(file_in, validate):
     """Iteratively process each XML element and write to csv(s)"""
 
-    with codecs.open(NODES_PATH, 'w') as nodes_file, \
-         codecs.open(NODE_TAGS_PATH, 'w') as nodes_tags_file, \
-         codecs.open(WAYS_PATH, 'w') as ways_file, \
-         codecs.open(WAY_NODES_PATH, 'w') as way_nodes_file, \
-         codecs.open(WAY_TAGS_PATH, 'w') as way_tags_file:
+    with codecs.open(NODES_PATH, 'wb') as nodes_file, \
+         codecs.open(NODE_TAGS_PATH, 'wb') as nodes_tags_file, \
+         codecs.open(WAYS_PATH, 'wb') as ways_file, \
+         codecs.open(WAY_NODES_PATH, 'wb') as way_nodes_file, \
+         codecs.open(WAY_TAGS_PATH, 'wb') as way_tags_file:
 
         nodes_writer = UnicodeDictWriter(nodes_file, NODE_FIELDS)
         node_tags_writer = UnicodeDictWriter(nodes_tags_file, NODE_TAGS_FIELDS)
