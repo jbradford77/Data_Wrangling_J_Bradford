@@ -15,6 +15,8 @@ Use this query
 
 This map is of the part of Delaware along the Atlantic Ocean. Sea level rise from ice melt will likely erase this area in the next 50 years so this map won't be valid then. 
 
+The project uses python 2.7 and sqlite3
+
 
 ## Problems Encountered in the Map
 
@@ -30,7 +32,7 @@ This map is of the part of Delaware along the Atlantic Ocean. Sea level rise fro
 (the 'wb' was originally 'w' but windows gets weird with that for some reason)
 ```
 
-### My pile of code also didn't take my encoding as utf-8 advice and dumped a bunch of errors when I tried that so I made temp tables then forced everything into the real tables like so:
+### While trying to insert form the CSVs into the sqlite3 tables, I got a datatype mismatch error. My pile of code didn't take my encoding as utf-8 advice when I tried to add that to lines 131 and friends in the delaware_beach.py file and had a bunch of errors so I made temp tables then forced everything into the real tables like so:
 
 ```sql
 
@@ -77,7 +79,7 @@ DROP TABLE nodes_temp;
 
 ```
 
-This seems less impressive in hindsight, but took me days to figure out.
+This seems less impressive in hindsight, but took me days to figure out. I did a version of this for each table. 
 
 
 ### Postal Codes
