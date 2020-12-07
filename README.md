@@ -141,23 +141,23 @@ City,			Count
 
 Millsboro,		8173
 Lewes,			1995
-Rehoboth Beach,	 777
-Bethany Beach,	 751
+Rehoboth Beach,		 777
+Bethany Beach,		 751
 Dagsboro,		 706
 Georgetown,		 681
-South Bethany,	 379
+South Bethany,		 379
 Milton,			 357
 Millville,		 247
 Selbyville,		 188
-Dewey Beach,	 108   
+Dewey Beach,		 108   
 Long Neck,		  89
 Harbeson,		  87
 Ocean View,		  86
 Frankford,		  31
-Fenwick Island,    7
+Fenwick Island,		   7
 milton,			   3
-Clarksville,	   1
-North Bethany Beach,1
+Clarksville,		   1
+North Bethany Beach,	   1
 ```
 
 ### Clarksville looks like an error, but it does exist even though only 3 people live there and nobody really knows where it is. 
@@ -185,22 +185,22 @@ we get:
 
 Millsboro,		8173
 Lewes,			1995
-Rehoboth Beach,	 777
-Bethany Beach,	 751
+Rehoboth Beach,		 777
+Bethany Beach,		 751
 Dagsboro,		 706
 Georgetown,		 681
-South Bethany,	 379
+South Bethany,		 379
 Milton,			 360
 Millville,		 247
 Selbyville,		 188
-Dewey Beach,	 108   
+Dewey Beach,		 108   
 Long Neck,		  89
 Harbeson,		  87
 Ocean View,		  86
 Frankford,		  31
-Fenwick Island,    7
-Clarksville,	   1
-North Bethany Beach,1
+Fenwick Island,  	   7
+Clarksville,		   1
+North Bethany Beach,	   1
 
 
 ## Data Overview
@@ -248,10 +248,10 @@ User			Count
 ```sql
 tlt83			286794
 RyanSta80		 91129
-ElliottPlack	 70451
+ElliottPlack		 70451
 bmillman85		 13574
-RoadGeek_MD99	 11997
-"danny fish"	  5622
+RoadGeek_MD99		 11997
+"danny fish"		  5622
 ceyockey		  5309
 dchiles			  5158
 JmanVT			  4873
@@ -286,15 +286,15 @@ LIMIT 10;
 Amenity					Count
 ```sql
 restaurant	      			92
-fountain	      			  91
-bench			      		    53
-fast_food		      		  27
-bicycle_parking	      	16
-toilets					        16
-ice_cream			      	  10
-cafe				      	     7
-parking			      		   7
-bicycle_repair_station	 6
+fountain	      			91
+bench			      		53
+fast_food		      		27
+bicycle_parking	      			16
+toilets					16
+ice_cream			      	10
+cafe				      	 7
+parking			      		 7
+bicycle_repair_station			 6
 ```
 
 
@@ -322,7 +322,7 @@ GROUP BY nodes_tags.value
 ORDER BY num DESC;
 ```
 
-```sql
+```
 pizza			11
 chinese			 8
 seafood			 6
@@ -334,7 +334,7 @@ bistro			 1
 caribbean		 1
 diner			 1
 french			 1
-pizza;american	 1
+pizza;american		 1
 steak_house		 1
 sushi			 1
 thai			 1
