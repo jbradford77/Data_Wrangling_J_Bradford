@@ -15,7 +15,7 @@ Use this query
 
 This map is of the part of Delaware along the Atlantic Ocean. Sea level rise from ice melt will likely erase this area in the next 50 years so this map won't be valid then. 
 
-The project uses python 2.7 and sqlite3
+The project uses python 2.7 and sqlite3. Queries below and from the '"sql"' file called make_temp_tables_and_import_csvs.sql were done on the command line. 
 
 
 ## Problems Encountered in the Map
