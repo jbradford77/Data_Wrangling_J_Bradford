@@ -161,8 +161,10 @@ North Bethany Beach,	   1
 ```
 
 ### Clarksville looks like an error, but it does exist even though only 3 people live there and nobody really knows where it is. 
-### Milton and milton are the same place so I'll fix that capitalization issue
+
 ### North Bethany Beach appears to be a mistake, but unfortunately does exist as lump of billion dollar ocean-front homes that are located on a strip of land that dissapears 3 times a year but nobody cares because the people that own these houses can afford helicopters full of dirt to be flown in and houses to be rebuilt every couple years.
+
+### Milton and milton are the same place so I'll fix that capitalization issue here:
 
 ```sql
 UPDATE ways_tags
