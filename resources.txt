@@ -1,0 +1,17 @@
+Resources
+
+The mentor help section once I got access to posts 
+https://knowledge.udacity.com/?nanodegree=nd002-wgu&page=1&project=25&query=xml%20to%20csv&rubric=25&sort=RELEVANCE
+
+The sample project provided in class
+https://gist.githubusercontent.com/carlward/54ec1c91b62a5f911c42/raw/730a44f0244295b81d7317df740420fc53fb51cc/sample_project.md
+
+Had to go here a few times because my brain only speaks SQL Server anymore
+https://www.sqlite.org/docs.html
+
+Where I found the substring thing for sqlite3
+https://www.w3resource.com/sqlite/core-functions-substr.php
+
+The brilliant idea to make temp tables then jam everything sideways into the real tables
+https://stackoverflow.com/questions/50735349/import-csv-into-sqlite3-insert-failed
+- btw that pandas thing didn't fix the datatype mismatch, I did try it though. 
