@@ -15,15 +15,149 @@ Use this query
 
 This map is of the part of Delaware along the Atlantic Ocean. Sea level rise from ice melt will likely erase this area in the next 50 years so this map won't be valid then. 
 
-The project uses python 2.7 and sqlite3. Queries below and from the '"sql"' file called make_temp_tables_and_import_csvs.sql were done on the command line. 
+The project uses python 2.7 and sqlite3. Queries below and from the "sql" file called make_temp_tables_and_import_csvs.sql were done on the command line. 
 
 
 ## Problems Encountered in the Map
 
-- Ice cream is listed as an amenity and not a type of cuisine although it's what's for lunch most days spent on a hot beach
-- Nothing to '"fix"' with the zipcodes. Let's fix them anyway because I have a personal reason to want to eliminate 9 digit zip codes from the world.
-- Data is at least pre-covid age and some of the cuisines where there was only 1 technically don't exist in the real world anymore but there aren't may people updating this stuff.
+- Street name abbreviations are "cleaned up" and changed to be spelled out as whole words.
+- I really want to show how popular beach fries are as a whole cuisine here, but the fries stands are lumped under fast-food as an amenity instead of restaurants with a specific cuisine
+- Nothing to "fix" with the zipcodes, they're all uniform and correct. There's some zip code data laid out though below since that seems like a common thing to work on.
 - Going from xml to sqlite took eleventy billion years so that's a big portion of this readme.
+
+### Running an audit on street names found some abbreviations. A sample of results is below. The most common abbreviations found were Ln, St, and Blvd.
+```
+'Alley': set(['Hudson Alley',
+               'Neils Alley',
+               'Pond Alley',
+               'Shovelhead Alley',
+               'Truitt Alley']),
+ 'Bluff': set(['Ocean Bluff']),
+ 'Blvd.': set(['Edwards Blvd.']),
+ 'Boardwalk': set(['North Boardwalk', 'South Boardwalk']),
+ 'Branch': set(['Short Branch']),
+ 'Circle': set(['Beacon Circle',
+                'Bridle Reach Circle',
+                'Campbell Circle',
+                'Captains Circle',
+                'Comanche Circle',
+                'Coverdale Circle',
+                'Crist Circle',
+                'Doury Circle',
+                'Dune Circle',
+                'East Atlantic Circle',
+                'Halls Heritage Circle',
+                'Harbour Circle',
+                'Houston Circle',
+                'Indian Meadows Circle',
+                'Kyle Circle',
+                'Lakewood Circle',
+                'Long Neck Circle',
+                'Magnolia Circle',
+                'Marina Bay Circle',
+                'Mill Chase Circle',
+                'Nash Circle',
+                'Patrick Henry Circle',
+                'Pine Run Circle',
+                'Samuel Adams Circle',
+                'Springwood Circle',
+                'The Circle',
+                'Villa Circle',
+                'Vireo Circle',
+                'Woodlake Circle']),
+ 'Corner': set(['Caitlans Corner']),
+ 'Cout': set(['Creek View Cout']),
+ 'Cove': set(['Breezy Cove',
+              'Mimosa Cove',
+              'Misty Cove',
+              'Mooring Cove',
+              'Paradise Cove',
+              'Peaceful Cove',
+              'Rock Cove',
+              'Sandcastle Cove',
+              'Tern Cove']),
+ 'Crossing': set(['Moores Crossing', 'Pugs Crossing']),
+ 'DE-1': set(['DE-1']),
+ 'Dunbarton': set(['Dunbarton']),
+ 'Entrance': set(['Entrance']),
+ 'Esplanade': set(['Peninsula Esplanade']),
+ 'Extended': set(['Rehoboth Avenue Extended',
+                  'Skipjack Extended',
+                  'South Galley Extended',
+                  'South Oak Drive Extended',
+                  'South Shore Drive Extended',
+                  'Union Street Extended',
+                  'Washington Street Extended']),
+ 'Falls': set(['Berry Bramble Falls', 'North Berry Bramble Falls']),
+ 'Haven': set(['Hazelnut Haven']),
+ 'Highway': set(['Coastal Highway',
+                 'John J Williams Highway',
+                 'Kings Highway',
+                 'Lewes Georgetown Highway',
+                 'Millsboro Highway',
+                 'Milton Ellendale Highway',
+                 'North Dupont Highway',
+                 'Wilson Highway']),
+ 'Hills': set(['Buttercream Hills',
+               'North Cotton Patch Hills',
+               'South Cotton Patch Hills']),
+ 'Hwy': set(['John J Williams Hwy']),
+ 'Knoll': set(['Honeysuckle Knoll']),
+ 'Landing': set(['Herring Landing',
+                 'Pembroke Landing',
+                 'Roanoke Rapids Landing']),
+ 'Ln': set(['Branch View Ln',
+            'Cedar Ln',
+            'No Name Ln',
+            'Pine Ln',
+            'Salty Dog Ln']),
+ 'Loop': set(['Alderwood Loop',
+              'Bethany Loop',
+              'Draper Loop',
+              'Sawyer Loop',
+              'Seaview Loop']),
+ 'Mews': set(['Rehoboth Mews']),
+ 'One': set(['Highway One']),
+ 'Pass': set(['Tecumseh Pass']),
+ 'Path': set(['Brookstone Path',
+              'Fowlers Path',
+              'Kayakers Path',
+              'Sunburst Path',
+              'Swirling Waters Path']),
+ 'Plaza': set(['Georgetown Plaza', 'Ocean One Plaza']),
+ 'Point': set(['Fishers Point',
+               'Heron Point',
+               'Pier Point',
+               'Pilot Point',
+               'Racoons Point']),
+ 'Ranch': set(['Dakotas Ranch']),
+ 'Reach': set(['Harvest Run Reach']),
+ 'Row': set(['King Street Row', 'Pusey Row']),
+ 'Run': set(['Deer Run',
+             'Fox Run',
+             'Meadow Run',
+             'Mermaid Run',
+             'Millers Run',
+             'Pine Run']),
+ 'St': set(['Goff St', 'N Race St']),
+ 'Strip': set(['Delberts Strip']),
+ 'View': set(['Endless View']),
+ 'Village': set(['Cannery Village']),
+ 'Walk': set(['Navigators Walk', 'Wilson Walk'])
+```
+
+
+### here's part of the clean_streets_audit.py file that finds and cleans abbreviations out of street names. Before and after versions of the OSM files are available in zip files in this repository.
+
+```python
+def update_name(name, mapping):
+
+    for key, value in mapping.iteritems():
+        if re.search(key, name):
+            name = re.sub(street_type_re, value, name)
+
+    return name
+```
 
 ### Once I finally got CSVs created, they had blank lines after every line so I deleted them all and adjusted the csv writer lines like so:
 
@@ -32,7 +166,7 @@ The project uses python 2.7 and sqlite3. Queries below and from the '"sql"' file
 (the 'wb' was originally 'w' but windows gets weird with that for some reason)
 ```
 
-### While trying to insert form the CSVs into the sqlite3 tables, I got a datatype mismatch error. My pile of code didn't take my encoding as utf-8 advice when I tried to add that to lines 131 and friends in the delaware_beach.py file and had a bunch of errors so I made temp tables then forced everything into the real tables like so:
+### While trying to insert form the CSVs into the sqlite3 tables, I got a datatype mismatch error. My pile of code didn't take my encoding as utf-8 advice when I tried to add that to lines 131 and friends in the delaware_beach.py file and had a bunch of errors so I made temp tables then forced everything into the real tables sideways:
 
 ```sql
 
@@ -98,7 +232,7 @@ GROUP BY tags.value
 ORDER BY count DESC;
 ```
 
-* All query results pretttied up with tabs to make them human friendly *
+* All query results pretttied up with tabs to make them human friendly 
 
 ```sql
 value  count
@@ -304,7 +438,7 @@ bicycle_repair_station			 6
 
 ### Most popular cuisines
 
-# How much of the fast food is actually beach fries?
+# How much of the fast_food is actually beach fries? Again, this had to be dragged from the names because potatoes aren't real food. 
 
 ```sql
 SELECT value, COUNT(*) as num
@@ -312,9 +446,9 @@ FROM nodes_tags
 WHERE value LIKE '%FRIES' OR value='Gus & Gus';
 
 ```
-8 of 27
+8
 
-# Other food that exists here
+# Other food that exists here. Of 92 restaurants, only 43 have a specific type of cuisine. Ice cream is somehow both an amenity and a type of cuisine.
 
 ```sql
 SELECT nodes_tags.value, COUNT(*) as num
