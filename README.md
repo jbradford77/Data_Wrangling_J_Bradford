@@ -320,7 +320,7 @@ ORDER BY count DESC;
 ```
 
 we get:
-
+```
 Millsboro,		8173
 Lewes,			1995
 Rehoboth Beach,		 777
@@ -339,7 +339,7 @@ Frankford,		  31
 Fenwick Island,  	   7
 Clarksville,		   1
 North Bethany Beach,	   1
-
+```
 
 ## Data Overview
 
